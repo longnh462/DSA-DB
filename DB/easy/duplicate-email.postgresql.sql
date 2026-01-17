@@ -1,4 +1,9 @@
-select p.email
-from Person p
-group by p.email
-having count(*) > 1
+DELETE FROM Person
+WHERE id IN (
+SELECT id FROM Person A
+WHERE EXISTS (
+SELECT 1 FROM Person P
+WHERE   P.email = A.email
+AND P.id    < A.id
+)
+)
